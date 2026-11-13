@@ -64,15 +64,20 @@ export class HandTrackingService {
   private readonly PINCH_ENTER_RATIO = 0.32; // Trigger pinch when pinchRatio <= this
   private readonly PINCH_EXIT_RATIO = 0.52;  // Release pinch when pinchRatio >= this
   
-  // State-machine based deliberate gesture confirmation counters
+  // State-machine based deliberate gesture confirmation counters, in camera frames (~33 ms each at the requested 30 fps)
   private pinchEngageFrames = 0;
   private pinchReleaseFrames = 0;
-  private readonly ENGAGE_CONFIRM_THRESHOLD = 5;  // Minimum 5 consecutive frames of stable 'pinched' signal before triggering interaction
-  private readonly RELEASE_CONFIRM_THRESHOLD = 4; // Minimum 4 consecutive frames of stable release signal before dropping object
-  
-  // Hand tracking loss grace period (prevents dropping pieces on momentary 1-3 frame camera dropouts)
+  private readonly ENGAGE_CONFIRM_THRESHOLD = 3;  // ~100 ms of stable 'pinched' signal before triggering interaction
+  private readonly RELEASE_CONFIRM_THRESHOLD = 2; // ~67 ms of stable release signal before dropping object
+
+  // Hand tracking loss grace period (prevents dropping pieces, and the pointer blinking, on momentary camera dropouts)
   private lostHandGraceFrames = 0;
-  private readonly MAX_LOST_GRACE_FRAMES = 8; // ~130ms grace period at 60fps
+  private readonly MAX_LOST_GRACE_FRAMES = 5; // ~170 ms at 30 fps
+
+  // Each camera frame is read once. The display refreshes 60-120 times a second but the camera delivers ~30
+  // frames: reading the same frame again cost a full detection and a re-render, and its repeated position made
+  // the 1€ filter see each real move happen in a few milliseconds, so it opened up and let the jitter through.
+  private lastVideoTime = -1;
 
   // FPS tracking
   private lastFrameTime = performance.now();
@@ -313,7 +318,8 @@ export class HandTrackingService {
   private processVideoLoop = () => {
     if (!this.isRunning || !this.videoElement || !this.handLandmarker) return;
 
-    if (this.videoElement.readyState >= 2) {
+    if (this.videoElement.readyState >= 2 && this.videoElement.currentTime !== this.lastVideoTime) {
+      this.lastVideoTime = this.videoElement.currentTime;
       const startTimeMs = performance.now();
       try {
         const results = this.handLandmarker.detectForVideo(this.videoElement, startTimeMs);
@@ -527,6 +533,7 @@ export class HandTrackingService {
     this.state.isHandDetected = false;
     this.state.isPinching = false;
     this.state.landmarks = null;
+    this.lastVideoTime = -1;
     this.pinchMachineState = 'OPEN';
     this.isPinchingState = false;
     this.pinchEngageFrames = 0;
