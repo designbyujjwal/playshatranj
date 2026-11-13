@@ -1,7 +1,7 @@
 # Render blueprint: the game and its small multiplayer server (invite rooms and the live duel link) as one web service
 services:
   - type: web
-    name: shatranj
+    name: playshatranj   # the service name sets the address: https://playshatranj.onrender.com
     runtime: node
     plan: free
     branch: royal-study
