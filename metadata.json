@@ -1,0 +1,11 @@
+{
+  "name": "Spatial 3D Chess",
+  "description": "A spatial 3D chess game powered by Three.js, live peer-to-peer 2-player video matches with invite links, MediaPipe hand tracking, and voice recognition move controls.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,12 +1,32 @@
 # Shatranj
 
-A web chess game played with hand gestures and voice commands.
+The royal game: 3D chess in a candlelit study, played with hand gestures, by voice, or with the mouse, against the engine, across one table, or as a live courier duel with a rival anywhere.
 
-## Run it on GitHub Pages
-1. Upload everything in this folder to the root of a GitHub repo (keep the `assets`, `models` and `music` folders as they are).
-2. In the repo: Settings → Pages → Source: "Deploy from a branch" → branch `main`, folder `/ (root)` → Save.
-3. After a minute, open `https://<your-username>.github.io/<repo-name>/`.
+Made for laptops and tablets. Best in Chrome or Edge; allow the camera and microphone when asked.
 
-Best in Chrome or Edge on desktop or tablet. Allow camera and microphone when asked.
+## Run locally
 
-Note: opening index.html by double-clicking won't work (camera, voice and 3D models need a web server). Use the GitHub Pages link.
+Needs Node.js 20 or newer.
+
+```bash
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000.
+
+## Run in production
+
+The game comes with a small server: it hands out the courier invite rooms and links the two players of a live duel. It needs a host that runs Node and keeps WebSocket connections open (GitHub Pages cannot do this).
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+The server listens on `PORT` (3000 by default).
+
+### Render
+
+`render.yaml` describes the service. In Render: **New → Blueprint**, pick this repository, and Render builds and starts it on every push.

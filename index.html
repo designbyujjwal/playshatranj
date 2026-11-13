@@ -1,62 +1,37 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Shatranj</title>
-<style>
-  /* Single dark look: the game is a candle-lit study, so it keeps its own palette in both themes. */
-  :root { --bg: #120d08; --fg: #f3e9d2; color-scheme: dark; }
-  html, body { height: 100%; }
-  body { margin: 0; background: var(--bg); color: var(--fg); overflow: hidden; }
-  #root { height: 100%; }
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Pinyon+Script&family=UnifrakturCook&family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/index-BLtWWP5O.css">
-<div id="root"><div id="boot-note" style="height:100%;display:flex;align-items:center;justify-content:center;font:15px Georgia,serif;color:#d9c9a3;letter-spacing:.08em;text-align:center;padding:24px">Opening the royal study&hellip;</div></div>
-<script>
-window.addEventListener('error',function(e){var n=document.getElementById('boot-note');if(n){n.innerHTML='Something stopped the game from loading.<br><small>'+String(e.message||'script error')+'</small><br><small>Try a hard refresh (Ctrl/Cmd + Shift + R).</small>';}});
-setTimeout(function(){var n=document.getElementById('boot-note');if(n){n.innerHTML='Still loading&hellip;<br><small>If this stays, hard refresh (Ctrl/Cmd + Shift + R).</small>';}},12000);
-</script>
-<script>document.body.classList.add('text-neutral-100','overflow-hidden','select-none');</script>
-<script type="module" src="assets/index-DaJZObjd.js"></script>
-<button id="music-toggle" type="button" aria-label="Mute music" aria-pressed="false" title="Mute music">
-  <svg class="on" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-  <svg class="off" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
-</button>
-<style>
-  /* Music-only mute: fixed in the top-right corner on every screen */
-  #music-toggle{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));right:16px;z-index:2147483000;width:44px;height:44px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;color:#e9cf8a;
-    background:rgba(18,13,8,.72);border:1px solid rgba(222,180,77,.55);box-shadow:0 4px 14px rgba(0,0,0,.45);
-    -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:transform .15s ease,background .15s ease,border-color .15s ease}
-  #music-toggle:hover{background:rgba(60,8,10,.85);border-color:#deb44d;transform:scale(1.06)}
-  #music-toggle:focus-visible{outline:2px solid #feeaa7;outline-offset:3px}
-  #music-toggle.is-hidden{display:none}
-  #music-toggle .off{display:none}
-  #music-toggle[aria-pressed="true"]{color:#9e958a}
-  #music-toggle[aria-pressed="true"] .on{display:none}
-  #music-toggle[aria-pressed="true"] .off{display:block}
-</style>
-<script>
-(function(){
-  var btn=document.getElementById('music-toggle'), KEY='shatranj-music-muted';
-  function saved(){try{return localStorage.getItem(KEY)==='1'}catch(e){return false}}
-  function save(v){try{localStorage.setItem(KEY,v?'1':'0')}catch(e){}}
-  function paint(m){btn.setAttribute('aria-pressed',m?'true':'false');var t=m?'Unmute music':'Mute music';btn.setAttribute('aria-label',t);btn.title=t;}
-  function hook(){
-    var music=window.shatranjMusic; if(!music){return setTimeout(hook,100);}
-    var orig=music.setMuted.bind(music);
-    music.setMuted=function(v){orig(v);paint(!!v);};   // keeps the icon in sync with the menu's mute too
-    if(saved()) music.setMuted(true); else paint(false);
-    // hide the button while playing on the board (music is silent there), show it again on menus
-    var origMood=music.setMood.bind(music);
-    function place(){btn.classList.toggle('is-hidden', music.mood==='board');}
-    music.setMood=function(v){origMood(v);place();};
-    place();
-    // stop presses on the button from also reaching the board (bubble phase, so the button's own click still runs)
-    ['pointerdown','pointerup','mousedown','mouseup','touchstart','touchend'].forEach(function(ev){btn.addEventListener(ev,function(e){e.stopPropagation();})});
-    btn.addEventListener('click',function(e){e.stopPropagation();var m=!music.muted;music.setMuted(m);save(m);});
-  }
-  hook();
-})();
-</script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spatial 3D Chess</title>
+    <link rel="icon" type="image/svg+xml" href="/chess-io-logo.svg" />
+    <meta name="description" content="A spatial 3D chess game powered by Three.js, live peer-to-peer 2-player video matches with invite links, MediaPipe hand tracking, and voice recognition move controls." />
+    <meta property="og:title" content="Spatial 3D Chess" />
+    <meta property="og:description" content="A spatial 3D chess game powered by Three.js, live peer-to-peer 2-player video matches with invite links, MediaPipe hand tracking, and voice recognition move controls." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Pinyon+Script&family=Cinzel:wght@400;500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- A courier invite link opens on the envelope's dark backdrop, so no white page shows while the game loads -->
+    <style>html.courier-invite, html.courier-invite body { background-color: #0b0603; }</style>
+    <script>if (/[?&]room=/.test(location.search)) document.documentElement.classList.add('courier-invite');</script>
+  </head>
+  <body class="bg-white text-neutral-100 overflow-hidden select-none">
+    <audio id="shatranj-bg-music" src="/music/royal-battle.mp3" autoplay preload="auto" loop playsinline></audio>
+    <script>
+      (function() {
+        var a = document.getElementById('shatranj-bg-music');
+        if (!a) return;
+        a.volume = 0.16;
+        a.playbackRate = 1.0;
+        a.muted = false;
+        var p = a.play();
+        if (p && p.catch) p.catch(function() {});
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
 
-
-</body></html>

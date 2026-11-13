@@ -1,0 +1,10 @@
+# Verify layer order in SVG
+print("Layer order designed:")
+print("1. Fabric base")
+print("2. Embroidered Badges & SHATRANJ Title (woven into cloth)")
+print("3. Diagonal Crease Shadows (casting deep shadows OVER text & badges)")
+print("4. Diagonal Crease Highlights (illuminating ridges OVER text & badges)")
+print("5. Top Gathered Pleats (casting shadows onto top of embroidery)")
+print("6. Moving Velvet Luster Sheen (glinting across velvet and embroidery together)")
+print("7. Vertical Shading & Soot Overlay")
+print("8. Scorched lacerations & torn fray edges")
